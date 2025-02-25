@@ -32,7 +32,7 @@ https://github.com/user-attachments/assets/ce728b39-4f59-4e77-b56a-6e58f545a49d
 - Isaac Sim 4.5.0
 - Isaac Lab 2.0.0
 
-and our RL library for run examples
+and our RL library to run the examples
 - [Simple-RL](https://github.com/asdfGuest/Simple-RL)
 
 
