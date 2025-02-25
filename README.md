@@ -3,9 +3,7 @@ Implementation of legged(currently quadruped) locomotion environment for reinfor
 
 
 # Running Video
-<video width="640" height="360" controls>
-  <source src="assets\LeggedRobot-Play (small).mp4" type="video/mp4">
-</video>
+https://github.com/user-attachments/assets/ce728b39-4f59-4e77-b56a-6e58f545a49d
 
 
 # Getting Started
@@ -39,4 +37,4 @@ and our RL library for run examples
 
 
 # Notes
-When we tested, three environment A1, Go2, AnymalC each took approximately 2.3h, 7.4h, 4.9h.
+When we tested, three environment A1, Go2, AnymalC and each took approximately 2.3h, 7.4h, 4.9h.
