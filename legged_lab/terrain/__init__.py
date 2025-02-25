@@ -1,0 +1,5 @@
+from legged_lab.terrain.terrain_generator import TerrainGenerator
+from legged_lab.terrain.terrain_generator_cfg import FlatPatchSamplingCfg, SubTerrainBaseCfg, TerrainGeneratorCfg
+from legged_lab.terrain.terrain_importer import TerrainImporter
+from legged_lab.terrain.terrain_importer_cfg import TerrainImporterCfg
+from legged_lab.terrain.config import ROUGH_TERRAIN_CFG, ROUGH_TERRAIN_SMALL_CFG
