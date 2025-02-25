@@ -37,4 +37,4 @@ and our RL library for run examples
 
 
 # Notes
-When we tested, three environment A1, Go2, AnymalC and each took approximately 2.3h, 7.4h, 4.9h.
+In our tests, the environment A1, Go2, AnymalC took approximately 2.3, 7.4, 4.9 hours.
