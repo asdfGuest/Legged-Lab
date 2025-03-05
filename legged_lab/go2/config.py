@@ -22,6 +22,11 @@ class Go2Cfg(BaseConfig) :
         contact_penalty_names = _HIP + _HEAD
         robot_entity_name = 'robot'
         contact_sensor_entity_name = 'contact_sensor'
+        joint_index_names = [
+            'FL_hip_joint', 'FR_hip_joint', 'RL_hip_joint', 'RR_hip_joint',
+            'FL_thigh_joint', 'FR_thigh_joint', 'RL_thigh_joint', 'RR_thigh_joint',
+            'FL_calf_joint', 'FR_calf_joint', 'RL_calf_joint', 'RR_calf_joint',
+        ]
     class reward(BaseConfig.reward) :
         target_mean_foot_height = -0.3
         target_lift_foot_height = -0.2

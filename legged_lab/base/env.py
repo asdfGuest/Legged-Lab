@@ -82,6 +82,8 @@ class BaseEnv(DirectRLEnv) :
             penalty = self.contact_snsr.find_bodies(self._cfg.scene.contact_penalty_names)[0]
         self.body_id = body_id
         self.cont_id = cont_id
+        self.joint_ord = self.robot.find_joints(self._cfg.scene.joint_index_names, preserve_order=True)[0]
+        self.joint_ord_inv = th.argsort(th.tensor(self.joint_ord)).tolist()
 
         self.command_manager = GridCommand(self.n_env, self.device, self._cfg.command)
         self.velocity_visualizator = VelocityVisualizator(
@@ -94,7 +96,7 @@ class BaseEnv(DirectRLEnv) :
             dtype=th.float32,
             device=self.device
         )
-        self.obs_tensor = th.zeros(
+        self.obs_tensor_ordered = th.zeros(
             size=(self.n_env,self.n_history,self.n_obs),
             dtype=th.float32,
             device=self.device
@@ -138,7 +140,7 @@ class BaseEnv(DirectRLEnv) :
         self.terrain_level_update_buf = th.zeros(size=(self.n_env,), dtype=th.int64, device=self.device)
 
         self.root_linvel_b_buff = th.zeros(
-            size=(self.n_env,self._cfg.simulation.decimation,3),
+            size=(self.n_env,self._cfg.simulation.decimation*self._cfg.terrain_curriculum.linvel_buff_len,3),
             dtype=th.float32,
             device=self.device
         )
@@ -170,9 +172,9 @@ class BaseEnv(DirectRLEnv) :
             )
     
 
-    def _pre_physics_step(self, actions: th.Tensor) :
+    def _pre_physics_step(self, action_ordered: th.Tensor) :
         self.action_tensor = self.action_tensor.roll(shifts=1, dims=1)
-        self.action_tensor[:,0,:] = actions
+        self.action_tensor[:,0,:] = action_ordered[:,self.joint_ord_inv]
         self.action_applied_cnt = 0
 
 
@@ -236,18 +238,18 @@ class BaseEnv(DirectRLEnv) :
             angvel_term,
             gravity_term,
             command_term,
-            joint_pos_term,
-            joint_vel_term,
-            action_term,
+            joint_pos_term[:,self.joint_ord],
+            joint_vel_term[:,self.joint_ord],
+            action_term[:,self.joint_ord],
         ], dim=-1)
         obs_t = (obs_t + (th.rand_like(obs_t) * 2 - 1) * self.obs_noise_vec) * self.obs_scale_vec
-        self.obs_tensor = th.roll(self.obs_tensor, shifts=1, dims=1)
-        self.obs_tensor[:,0,:] = obs_t
+        self.obs_tensor_ordered = th.roll(self.obs_tensor_ordered, shifts=1, dims=1)
+        self.obs_tensor_ordered[:,0,:] = obs_t
 
         privileged_obs = linvel_term
         privileged_obs = (privileged_obs + (th.rand_like(privileged_obs) * 2 - 1) * self.privileged_obs_noise_vec) * self.privileged_obs_scale_vec
         
-        return {'policy': (self.obs_tensor.clone(), privileged_obs)}
+        return {'policy': (self.obs_tensor_ordered.clone(), privileged_obs)}
     
     
     def _get_rewards(self) :
@@ -396,7 +398,7 @@ class BaseEnv(DirectRLEnv) :
         super()._reset_idx(env_ids)
         
         self.action_tensor[env_ids] = 0.0
-        self.obs_tensor[env_ids] = 0.0
+        self.obs_tensor_ordered[env_ids] = 0.0
         self.filtered_action[env_ids] = 0.0
         self.root_linvel_b_buff[env_ids] = 0.0
 

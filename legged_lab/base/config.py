@@ -31,6 +31,8 @@ class BaseConfig :
         
         robot_entity_name:str = MISSING
         contact_sensor_entity_name:str = MISSING
+
+        joint_index_names:list[str] = MISSING
     
     class env :
         episode_length = 1000 # 20s
@@ -67,6 +69,7 @@ class BaseConfig :
         sample_freq = 500
     
     class terrain_curriculum :
+        linvel_buff_len = 5
         following_boundary = 0.35
         following_rate_threshold = (0.5, 0.7)
         buffer_length = 500

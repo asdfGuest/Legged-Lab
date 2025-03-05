@@ -19,6 +19,11 @@ class AnymalCCfg(BaseConfig) :
         contact_penalty_names = _THIGH
         robot_entity_name = 'robot'
         contact_sensor_entity_name = 'contact_sensor'
+        joint_index_names = [
+            'LF_HAA', 'RF_HAA', 'LH_HAA', 'RH_HAA',
+            'LF_HFE', 'RF_HFE', 'LH_HFE', 'RH_HFE',
+            'LF_KFE', 'RF_KFE', 'LH_KFE', 'RH_KFE',
+        ]
     class env(BaseConfig.env) :
         action_scale = 0.5
     class reward(BaseConfig.reward) :
