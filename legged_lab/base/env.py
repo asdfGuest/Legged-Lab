@@ -46,7 +46,6 @@ class BaseEnv(DirectRLEnv) :
                 dt=cfg.simulation.physics_dt,
                 render_interval=cfg.simulation.decimation,
                 physics_material=cfg.simulation.physics_material,
-                disable_contact_processing=True,
             ),
             decimation = cfg.simulation.decimation,
             episode_length_s = cfg.simulation.physics_dt*cfg.simulation.decimation*cfg.env.episode_length,
