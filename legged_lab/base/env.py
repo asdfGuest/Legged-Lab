@@ -132,6 +132,9 @@ class BaseEnv(DirectRLEnv) :
         self.privileged_obs_noise_vec, self.privileged_obs_scale_vec = get_noise_and_scale_vector([
             ('linvel', 3),
         ])
+        if not self._cfg.obs_noise.add_noise :
+            self.obs_noise_vec *= 0.0
+            self.privileged_obs_noise_vec *= 0.0
 
         # buffers
         self.follow_sum_buf = th.zeros(size=(self.n_env,), dtype=th.int64, device=self.device)
